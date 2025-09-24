@@ -310,26 +310,26 @@ window.Webflow.push(() => {
       });
     });
 
-    // document.querySelectorAll('[animate="title-mask"]').forEach((title) => {
-    //   let split = SplitText.create(title, {
-    //     type: 'words, lines, chars',
-    //     mask: 'lines',
-    //     autoSplit: true,
-    //   });
+    document.querySelectorAll('[animate="title-mask"]').forEach((title) => {
+      let split = SplitText.create(title, {
+        type: 'words, lines, chars',
+        // mask: 'lines',
+        // autoSplit: true,
+      });
 
-    //   console.log(split.chars);
+      console.log(split.chars);
 
-    //   split.chars[0].style.display = 'none';
-    //   gsap.set(split.chars[0], { color: 'red' });
+      // split.chars[0].style.display = 'none';
+      // gsap.set(split.chars, { color: 'red' });
 
-    //   // ScrollTrigger.create({
-    //   //   trigger: title,
-    //   //   start: 'top center',
-    //   //   end: 'bottom center',
-    //   //   scrub: true,
-    //   //   markers: true,
-    //   //   animation: gsap.from(split.chars, { opacity: 1, stagger: 0.1 }),
-    //   // });
-    // });
+      ScrollTrigger.create({
+        trigger: title,
+        start: 'bottom bottom',
+        end: 'bottom center',
+        scrub: true,
+        markers: true,
+        animation: gsap.from(split.chars, { opacity: 0.2, stagger: 0.1 }),
+      });
+    });
   });
 });
