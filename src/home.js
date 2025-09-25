@@ -199,7 +199,7 @@ window.Webflow.push(() => {
       trigger: scroller,
       start: 'top center',
       end: 'bottom center',
-      markers: false,
+
       scrub: true,
       onUpdate: (status) => {
         gsap.to(line, {
@@ -219,7 +219,7 @@ window.Webflow.push(() => {
         trigger: scroller,
         start: 'top bottom',
         end: 'bottom center',
-        markers: false,
+
         onEnter: () => {
           gsap.to('body', {
             backgroundColor: '#22211F',
@@ -250,7 +250,7 @@ window.Webflow.push(() => {
         trigger: scroller,
         start: 'top center',
         end: 'bottom bottom',
-        markers: false,
+
         onEnterBack: () => {
           gsap.to('body', {
             backgroundColor: '#22211F',
@@ -296,7 +296,7 @@ window.Webflow.push(() => {
         delay: 0.2,
         scrollTrigger: {
           trigger: title,
-          markers: false,
+
           start: 'top bottom',
           end: 'top bottom',
           toggleActions: 'play play none none',
@@ -313,7 +313,7 @@ window.Webflow.push(() => {
         // delay: 0.05,
         scrollTrigger: {
           trigger: subline,
-          markers: false,
+
           start: 'top bottom',
           end: 'top bottom',
           toggleActions: 'play play none none',
@@ -331,7 +331,7 @@ window.Webflow.push(() => {
         start: 'center bottom',
         end: 'bottom center',
         scrub: true,
-        markers: false,
+
         animation: gsap.from(split.chars, { opacity: 0.2, stagger: 0.1 }),
       });
     });
@@ -362,7 +362,7 @@ window.Webflow.push(() => {
           trigger: image,
           start: 'top+=100 bottom',
           end: 'bottom-=100 top',
-          markers: false,
+
           toggleActions: 'play reverse play reverse',
         },
       }
@@ -404,7 +404,7 @@ window.Webflow.push(() => {
           trigger: tag,
           start: 'top+=50 bottom',
           end: 'bottom-=100 top',
-          markers: false,
+
           toggleActions: 'play none none none',
         },
       }
@@ -415,7 +415,7 @@ window.Webflow.push(() => {
     trigger: '.testimonials-swiper_item',
     start: 'top bottom',
     end: 'bottom-=100 top',
-    markers: true,
+
     once: true,
     onEnter: () => {
       document
@@ -431,7 +431,7 @@ window.Webflow.push(() => {
     trigger: '.process-swiper_item .process-swiper_stat',
     start: 'top bottom',
     end: 'bottom-=100 top',
-    markers: true,
+
     once: true,
     onEnter: () => {
       document
