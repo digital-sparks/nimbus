@@ -1,11 +1,3 @@
-import { gsap } from 'gsap';
-import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import { Observer } from 'gsap/Observer';
-import { SplitText } from 'gsap/SplitText';
-
-gsap.registerPlugin(ScrollTrigger);
-gsap.registerPlugin(ScrollTrigger, Observer, SplitText);
-
 import Swiper from 'swiper';
 import {
   Autoplay,
@@ -18,6 +10,14 @@ import {
   FreeMode,
   A11y,
 } from 'swiper/modules';
+
+import { gsap } from 'gsap';
+
+import { Observer } from 'gsap/Observer';
+// import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { SplitText } from 'gsap/SplitText';
+
+gsap.registerPlugin(Observer, ScrollTrigger, SplitText);
 
 window.Webflow ||= [];
 window.Webflow.push(() => {
@@ -35,6 +35,13 @@ window.Webflow.push(() => {
     fadeEffect: {
       crossFade: true,
     },
+    keyboard: {
+      onlyInViewport: true,
+    },
+    navigation: {
+      prevEl: '[swiper-control="prev"]',
+      nextEl: '[swiper-control="next"]',
+    },
     breakpoints: {},
     on: {
       beforeInit: (swiper) => {
@@ -46,6 +53,11 @@ window.Webflow.push(() => {
           .forEach((counter) => {
             createVerticalCounter(counter, parseInt(counter.getAttribute('val'), 10));
           });
+        testimonialNavigation.slideTo(swiper.realIndex);
+        testimonialNavigation.slides.forEach((slide) => {
+          slide.classList.remove('swiper-slide-active');
+        });
+        testimonialNavigation.slides[swiper.realIndex].classList.add('swiper-slide-active');
       },
     },
   });
@@ -61,13 +73,7 @@ window.Webflow.push(() => {
     grabCursor: true,
     breakpoints: {},
     mousewheel: { forceToAxis: true },
-    keyboard: {
-      onlyInViewport: true,
-    },
-    navigation: {
-      prevEl: '[swiper-control="prev"]',
-      nextEl: '[swiper-control="next"]',
-    },
+
     on: {
       beforeInit: (swiper) => {
         swiper.wrapperEl.style.ColumnGap = 'unset';
@@ -75,16 +81,9 @@ window.Webflow.push(() => {
       click: (swiper, event) => {
         const clickedSlide = event.target.closest('.clients-swiper_item');
         if (clickedSlide) {
-          swiper.slides.forEach((slide) => {
-            slide.classList.remove('swiper-slide-active');
-          });
-          clickedSlide.classList.add('swiper-slide-active');
           const clickedIndex = swiper.slides.indexOf(clickedSlide);
           testimonialSwiper.slideTo(clickedIndex);
         }
-      },
-      slideChange: (swiper) => {
-        testimonialSwiper.slideTo(swiper.realIndex);
       },
     },
   });
@@ -138,16 +137,9 @@ window.Webflow.push(() => {
     speed: 200,
     spaceBetween: 0,
     a11y: true,
-    freeMode: {
-      enabled: true,
-      sticky: true,
-    },
     grabCursor: true,
-    keyboard: {
-      onlyInViewport: true,
-    },
-    mousewheel: { forceToAxis: true },
     breakpoints: {},
+    slideActiveClass: 'null',
     on: {
       beforeInit: (swiper) => {
         swiper.wrapperEl.style.ColumnGap = 'unset';
@@ -155,16 +147,9 @@ window.Webflow.push(() => {
       click: (swiper, event) => {
         const clickedSlide = event.target.closest('.grow-swiper_item');
         if (clickedSlide) {
-          swiper.slides.forEach((slide) => {
-            slide.classList.remove('swiper-slide-active');
-          });
-          clickedSlide.classList.add('swiper-slide-active');
           const clickedIndex = swiper.slides.indexOf(clickedSlide);
           sectionOneSwiper.slideTo(clickedIndex);
         }
-      },
-      slideChange: (swiper) => {
-        sectionOneSwiper.slideTo(swiper.realIndex);
       },
     },
   });
@@ -176,6 +161,10 @@ window.Webflow.push(() => {
     slidesPerView: 1,
     speed: 400,
     spaceBetween: 0,
+    keyboard: {
+      onlyInViewport: true,
+    },
+    mousewheel: { forceToAxis: true },
     a11y: true,
     grabCursor: false,
     allowTouchMove: false,
@@ -194,6 +183,11 @@ window.Webflow.push(() => {
           .forEach((counter) => {
             createVerticalCounter(counter, parseInt(counter.getAttribute('val'), 10));
           });
+        sectionOneNavigation.slideTo(swiper.realIndex);
+        sectionOneNavigation.slides.forEach((slide) => {
+          slide.classList.remove('swiper-slide-active');
+        });
+        sectionOneNavigation.slides[swiper.realIndex].classList.add('swiper-slide-active');
       },
     },
   });
@@ -216,7 +210,6 @@ window.Webflow.push(() => {
         });
       },
       onLeave: () => {
-        console.log('done');
         gsap.set(line, { scaleX: 0 });
       },
     });
@@ -290,7 +283,7 @@ window.Webflow.push(() => {
         type: 'words, lines',
         mask: 'lines',
         linesClass: 'line-split',
-        autoSplit: true,
+        // autoSplit: true,
       });
 
       gsap.from(split.words, {
@@ -300,12 +293,30 @@ window.Webflow.push(() => {
         duration: 0.8,
         ease: 'power2.out',
         stagger: 0.001,
+        delay: 0.2,
         scrollTrigger: {
           trigger: title,
           markers: false,
           start: 'top bottom',
-          end: 'bottom top+=10%',
-          toggleActions: 'play none none none',
+          end: 'top bottom',
+          toggleActions: 'play play none none',
+        },
+      });
+    });
+
+    document.querySelectorAll(' .pre-footer_component .text-size-medium').forEach((subline) => {
+      gsap.from(subline, {
+        opacity: 0,
+        yPercent: 100,
+        duration: 0.8,
+        ease: 'power2.out',
+        // delay: 0.05,
+        scrollTrigger: {
+          trigger: subline,
+          markers: false,
+          start: 'top bottom',
+          end: 'top bottom',
+          toggleActions: 'play play none none',
         },
       });
     });
@@ -313,23 +324,122 @@ window.Webflow.push(() => {
     document.querySelectorAll('[animate="title-mask"]').forEach((title) => {
       let split = SplitText.create(title, {
         type: 'words, lines, chars',
-        // mask: 'lines',
-        // autoSplit: true,
       });
-
-      console.log(split.chars);
-
-      // split.chars[0].style.display = 'none';
-      // gsap.set(split.chars, { color: 'red' });
 
       ScrollTrigger.create({
         trigger: title,
-        start: 'bottom bottom',
+        start: 'center bottom',
         end: 'bottom center',
         scrub: true,
-        markers: true,
+        markers: false,
         animation: gsap.from(split.chars, { opacity: 0.2, stagger: 0.1 }),
       });
     });
+  });
+
+  document.querySelectorAll('[animate^="image-"]').forEach((image) => {
+    const defaultScale = (() => {
+      switch (image.getAttribute('animate').replace('image-', '')) {
+        case 'large':
+          return 1.01;
+        case 'small':
+          return 1.04;
+        default:
+          return 1.02;
+      }
+    })();
+
+    gsap.fromTo(
+      image,
+      { opacity: 0, scale: defaultScale },
+      {
+        opacity: 1,
+        scale: 1,
+        ease: 'power2.inOut',
+        duration: 0.7,
+        transformOrigin: 'bottom center',
+        scrollTrigger: {
+          trigger: image,
+          start: 'top+=100 bottom',
+          end: 'bottom-=100 top',
+          markers: false,
+          toggleActions: 'play reverse play reverse',
+        },
+      }
+    );
+  });
+
+  document.querySelectorAll('.button:has(.button-icon-wrap)').forEach((button) => {
+    const iconWrap = button.querySelector('.button-icon-wrap');
+
+    button.addEventListener('mouseenter', () => {
+      gsap.to(iconWrap, {
+        x: '0.1rem',
+        duration: 0.2,
+        ease: 'power2.out',
+      });
+    });
+    button.addEventListener('mouseleave', () => {
+      gsap.to(iconWrap, {
+        x: '0rem',
+        duration: 0.3,
+        ease: 'power2.out',
+      });
+    });
+  });
+
+  document.querySelectorAll('.process_tag .overline-small').forEach((tag) => {
+    gsap.fromTo(
+      tag,
+      {
+        yPercent: 100,
+        opacity: 0,
+      },
+      {
+        yPercent: 0,
+        opacity: 1,
+        duration: 0.7,
+        ease: 'power2.out',
+        scrollTrigger: {
+          trigger: tag,
+          start: 'top+=50 bottom',
+          end: 'bottom-=100 top',
+          markers: false,
+          toggleActions: 'play none none none',
+        },
+      }
+    );
+  });
+
+  ScrollTrigger.create({
+    trigger: '.testimonials-swiper_item',
+    start: 'top bottom',
+    end: 'bottom-=100 top',
+    markers: true,
+    once: true,
+    onEnter: () => {
+      document
+        .querySelector('.testimonials-swiper_item')
+        .querySelectorAll('[animate="count"]')
+        .forEach((counter) => {
+          createVerticalCounter(counter, parseInt(counter.getAttribute('val'), 10));
+        });
+    },
+  });
+
+  ScrollTrigger.create({
+    trigger: '.process-swiper_item .process-swiper_stat',
+    start: 'top bottom',
+    end: 'bottom-=100 top',
+    markers: true,
+    once: true,
+    onEnter: () => {
+      document
+        .querySelector('.process-swiper_item')
+        .querySelectorAll('[animate="count"]')
+        .forEach((counter) => {
+          createVerticalCounter(counter, parseInt(counter.getAttribute('val'), 10));
+        });
+    },
   });
 });

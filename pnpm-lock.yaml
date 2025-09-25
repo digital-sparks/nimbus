@@ -35,7 +35,7 @@ importers:
         version: 10.1.2(eslint@9.25.1)
       eslint-plugin-prettier:
         specifier: ^5.2.6
-        version: 5.2.6(eslint-config-prettier@10.1.2)(eslint@9.25.1)(prettier@3.5.3)
+        version: 5.2.6(eslint-config-prettier@10.1.2(eslint@9.25.1))(eslint@9.25.1)(prettier@3.5.3)
       eslint-plugin-simple-import-sort:
         specifier: ^12.1.1
         version: 12.1.1(eslint@9.25.1)
@@ -1346,13 +1346,14 @@ snapshots:
     dependencies:
       eslint: 9.25.1
 
-  eslint-plugin-prettier@5.2.6(eslint-config-prettier@10.1.2)(eslint@9.25.1)(prettier@3.5.3):
+  eslint-plugin-prettier@5.2.6(eslint-config-prettier@10.1.2(eslint@9.25.1))(eslint@9.25.1)(prettier@3.5.3):
     dependencies:
       eslint: 9.25.1
-      eslint-config-prettier: 10.1.2(eslint@9.25.1)
       prettier: 3.5.3
       prettier-linter-helpers: 1.0.0
       synckit: 0.11.4
+    optionalDependencies:
+      eslint-config-prettier: 10.1.2(eslint@9.25.1)
 
   eslint-plugin-simple-import-sort@12.1.1(eslint@9.25.1):
     dependencies:

@@ -6,26 +6,8 @@ import { join, sep } from 'path';
 const BUILD_DIRECTORY = 'dist';
 const PRODUCTION = process.env.NODE_ENV === 'production';
 
-// Auto-detect entry points from src directory
-const findEntryPoints = () => {
-  try {
-    const srcFiles = readdirSync('src', { withFileTypes: true });
-
-    // Only include .js files directly in src that don't start with _ (underscore)
-    return srcFiles
-      .filter((dirent) => {
-        return !dirent.isDirectory() && dirent.name.endsWith('.js') && !dirent.name.startsWith('_');
-      })
-      .map((dirent) => `src/${dirent.name}`);
-  } catch (error) {
-    console.error('Error finding entry points:', error);
-    return ['src/index.js']; // Fallback to default
-  }
-};
-
 // Config entrypoint files
-const ENTRY_POINTS = findEntryPoints();
-console.log('Building entry points:', ENTRY_POINTS);
+const ENTRY_POINTS = ['src/home.js'];
 
 // Config dev serving
 const LIVE_RELOAD = !PRODUCTION;
@@ -44,8 +26,6 @@ const context = await esbuild.context({
   define: {
     SERVE_ORIGIN: JSON.stringify(SERVE_ORIGIN),
   },
-  // Disable code splitting to avoid module imports
-  format: 'iife', // Use immediately invoked function expression format
 });
 
 // Build files in prod
@@ -53,6 +33,7 @@ if (PRODUCTION) {
   await context.rebuild();
   context.dispose();
 }
+
 // Watch and serve files in dev
 else {
   await context.watch();
