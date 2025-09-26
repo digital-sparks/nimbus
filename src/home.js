@@ -194,6 +194,7 @@ window.Webflow.push(() => {
 
   document.querySelectorAll('.scroll-anchor').forEach((scroller, index) => {
     const line = document.querySelectorAll('.process-nav_progress-line')[index];
+    const navItem = document.querySelectorAll('.process-nav_link')[index];
 
     ScrollTrigger.create({
       trigger: scroller,
@@ -212,6 +213,27 @@ window.Webflow.push(() => {
       onLeave: () => {
         gsap.set(line, { scaleX: 0 });
       },
+      onEnter: () => {
+        // Scroll nav item into view on mobile
+        if (window.innerWidth <= 991 && navItem) {
+          // Adjust breakpoint as needed
+          navItem.scrollIntoView({
+            behavior: 'smooth',
+            block: 'nearest',
+            inline: 'center',
+          });
+        }
+      },
+      onEnterBack: () => {
+        // Also handle when scrolling back up
+        if (window.innerWidth <= 991 && navItem) {
+          navItem.scrollIntoView({
+            behavior: 'smooth',
+            block: 'nearest',
+            inline: 'center',
+          });
+        }
+      },
     });
 
     if (scroller.id === '07') {
@@ -225,6 +247,7 @@ window.Webflow.push(() => {
             backgroundColor: '#22211F',
             duration: 0.2,
           });
+          document.querySelector('.process_sticky-wrap').classList.add('is-inverse');
           document
             .querySelectorAll('.process-nav_link, .process-nav_progress-wrap')
             .forEach((item) => {
@@ -236,6 +259,7 @@ window.Webflow.push(() => {
             backgroundColor: '#FFFFFF',
             duration: 0.2,
           });
+          document.querySelector('.process_sticky-wrap').classList.remove('is-inverse');
           document
             .querySelectorAll('.process-nav_link, .process-nav_progress-wrap')
             .forEach((item) => {
@@ -256,6 +280,7 @@ window.Webflow.push(() => {
             backgroundColor: '#22211F',
             duration: 0.2,
           });
+          document.querySelector('.process_sticky-wrap').classList.add('is-inverse');
           document
             .querySelectorAll('.process-nav_link, .process-nav_progress-wrap')
             .forEach((item) => {
@@ -267,6 +292,7 @@ window.Webflow.push(() => {
             backgroundColor: '#FFFFFF',
             duration: 0.2,
           });
+          document.querySelector('.process_sticky-wrap').classList.remove('is-inverse');
           document
             .querySelectorAll('.process-nav_link, .process-nav_progress-wrap')
             .forEach((item) => {
@@ -283,6 +309,7 @@ window.Webflow.push(() => {
         type: 'words, lines',
         mask: 'lines',
         linesClass: 'line-split',
+        smartWrap: true,
         // autoSplit: true,
       });
 
