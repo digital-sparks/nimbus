@@ -21,6 +21,75 @@ gsap.registerPlugin(Observer, ScrollTrigger, SplitText);
 
 window.Webflow ||= [];
 window.Webflow.push(() => {
+  const navMenu = document.querySelector('.nav_inner');
+  let navHasBackground = false;
+  let mm = gsap.matchMedia();
+
+  mm.add('(min-width: 991px)', () => {
+    document.querySelectorAll('.nav_dropdown').forEach((nav) => {
+      nav.addEventListener('mouseenter', () => {
+        gsap.to(navMenu, {
+          backgroundColor: 'white',
+          duration: 0.3,
+          ease: 'power1.out',
+          overwrite: true,
+        });
+      });
+      nav.addEventListener('mouseleave', () => {
+        if (!navHasBackground) {
+          gsap.to(navMenu, { backgroundColor: 'transparent', duration: 0.3, ease: 'power1.out' });
+        }
+      });
+    });
+  });
+
+  mm.add('(max-width: 990px)', () => {
+    document.querySelectorAll('.nav_burger-open').forEach((nav) => {
+      nav.addEventListener('click', () => {
+        gsap.to(navMenu, {
+          backgroundColor: 'white',
+          duration: 0.3,
+          ease: 'power1.out',
+          overwrite: true,
+        });
+      });
+    });
+
+    document.querySelectorAll('.nav_burger-close').forEach((nav) => {
+      nav.addEventListener('click', () => {
+        if (!navHasBackground) {
+          gsap.to(navMenu, {
+            backgroundColor: 'transparent',
+            duration: 0.3,
+            delay: 0.9,
+            ease: 'power1.out',
+          });
+        }
+      });
+    });
+  });
+
+  ScrollTrigger.create({
+    trigger: '.nav_component',
+    start: 'bottom top',
+    end: 'bottom bottom',
+    onEnter: () => {
+      navHasBackground = true;
+      gsap.to(navMenu, {
+        backgroundColor: 'white',
+        duration: 0.3,
+        ease: 'power1.out',
+        overwrite: true,
+      });
+    },
+
+    onEnterBack: () => {
+      navHasBackground = false;
+      if (!document.querySelector('.nav_link.w--open'))
+        gsap.to(navMenu, { backgroundColor: 'transparent', duration: 0.3, ease: 'power1.out' });
+    },
+  });
+
   const testimonialSwiper = new Swiper('.testimonials-swiper_wrapper', {
     modules: [EffectFade, Autoplay, Navigation, Keyboard, Mousewheel, A11y],
     wrapperClass: 'testimonials-swiper_list',
